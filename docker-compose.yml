@@ -1,0 +1,43 @@
+version: '2'
+services:
+  php:
+    build: apache-php-dev
+    volumes:
+      - /vagrant/src/mentalo:/var/www/html
+      - $SRC/mode/:/var/mode/  
+    labels:
+      - "nature=binaries"
+    ports:
+      - "80:80"
+    expose:
+     - "80"  
+    depends_on:
+      - mysql
+    privileged: true
+    networks:
+      default:
+        aliases: 
+          - php
+
+  mysql:
+    image: mysql
+    labels:
+      - "nature=data"
+    volumes:
+      - /vagrant/data:/var/lib/mysql
+      - /vagrant/src/mentalo:/tmp
+    environment:
+      - MYSQL_ROOT_PASSWORD=azerty
+      - MYSQL_DATABASE=docdepot
+      - MYSQL_USER=docdepot
+      - MYSQL_PASSWORD=docdepot
+    ports:
+      - "3306:3306"
+    entrypoint: /tmp/install_db.sh
+    networks:
+      default:
+        aliases: 
+          - muysql
+
+networks:
+  default:
