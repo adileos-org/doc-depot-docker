@@ -16,8 +16,35 @@ php5-mysql \
 php5-mcrypt \
 mcrypt \
 php-pear \
-sendmail
+sendmail \
+wget 
 
+# INSTALL LLNG
+COPY etc.apt.sources.d.lemonldap-ng.list /
+
+RUN echo "# Install LemonLDAP::NG repo" \
+    && mv etc.apt.sources.d.lemonldap-ng.list /etc/apt/sources.list.d/lemonldap-ng.list \
+    && wget -O - http://lemonldap-ng.org/_media/rpm-gpg-key-ow2 | apt-key add - \
+
+RUN apt update \
+    && echo "# Install LemonLDAP::NG package" \
+    && apt-get install -y \
+	libapache2-mod-perl2 \
+	libapache2-mod-fcgid \
+	lemonldap-ng
+
+#OIDC dependencies
+RUN apt-get install -y \
+libcurl3 \
+libjansson4
+
+#RUN sudo a2enmod ssl
+
+# INSTALL OIDC MOD APACHE
+#WORKDIR /tmp
+#RUN wget http://ftp.us.debian.org/debian/pool/main/liba/libapache2-mod-auth-openidc/libapache2-mod-auth-openidc_1.6.0-1_amd64.deb
+#RUN dpkg -i libapache2-mod-auth-openidc_1.6.0-1_amd64.deb
+#RUN a2enmod auth_openidc
 
 # on veut une machine de dev qui affiche toutes les erreurs PHP
 RUN sed -i -e 's/^error_reporting\s*=.*/error_reporting = E_ALL/' /etc/php5/apache2/php.ini
@@ -25,6 +52,8 @@ RUN sed -i -e 's/^display_errors\s*=.*/display_errors = On/' /etc/php5/apache2/p
 
 RUN cp /etc/php5/mods-available/mcrypt.ini /etc/php5/apache2/conf.d/
 RUN cp /etc/php5/mods-available/mcrypt.ini /etc/php5/cli/conf.d/
+
+
 
 # commandes à exécuter au démarrage de l'instance de l'image
 # ici on démarrera Apache

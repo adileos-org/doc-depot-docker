@@ -1,16 +1,27 @@
 version: '2'
 services:
+  lemon-ng:
+    build: lemon-ng
+    volumes:
+      - ./lemon-ng/conf:/var/lib/lemonldap-ng/conf
+      - ./lemon-ng/sites:/etc/lemonldap-ng
+    ports:
+     - "80:80"  
+    networks:
+      default:
+        aliases: 
+          - auth.example.com
+          - manager.example.com
+          - reload.example.com
   php:
     build: apache-php-dev
     volumes:
-      - /vagrant/src/mentalo:/var/www/html
-      - $SRC/mode/:/var/mode/  
+      - /home/fred/Development/doc-depot:/var/www/html
+      - ./apache-php-dev/conf/000-default.conf:/etc/apache2/sites-available/000-default.conf
     labels:
       - "nature=binaries"
     ports:
-      - "80:80"
-    expose:
-     - "80"  
+      - "8080:80"
     depends_on:
       - mysql
     privileged: true
@@ -18,14 +29,16 @@ services:
       default:
         aliases: 
           - php
+          - dd.example.com
 
   mysql:
     image: mysql
+    build:  doc-depot-mysql
     labels:
       - "nature=data"
     volumes:
-      - /vagrant/data:/var/lib/mysql
-      - /vagrant/src/mentalo:/tmp
+      - dd-mysql-datavol:/var/lib/mysql
+      - ./doc-depot-mysql:/docker-entrypoint-initdb.d
     environment:
       - MYSQL_ROOT_PASSWORD=azerty
       - MYSQL_DATABASE=docdepot
@@ -33,11 +46,14 @@ services:
       - MYSQL_PASSWORD=docdepot
     ports:
       - "3306:3306"
-    entrypoint: /tmp/install_db.sh
+    #entrypoint: 
+    #   - bash
+    #   - /usr/local/bin/docker-entrypoint.sh
     networks:
       default:
         aliases: 
-          - muysql
-
+          - mysql
+volumes:
+  dd-mysql-datavol:
 networks:
   default:
