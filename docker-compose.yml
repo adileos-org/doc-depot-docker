@@ -6,7 +6,8 @@ services:
       - ./lemon-ng/conf:/var/lib/lemonldap-ng/conf
       - ./lemon-ng/sites:/etc/lemonldap-ng
     ports:
-     - "80:80"  
+     - "80:80"
+     - "443:443"
     networks:
       default:
         aliases: 
@@ -22,9 +23,12 @@ services:
       - "nature=binaries"
     ports:
       - "8080:80"
+      - "8443:443"    
     depends_on:
       - mysql
     privileged: true
+    extra_hosts:
+      - "127.0.0.1:dd.example.com"
     networks:
       default:
         aliases: 

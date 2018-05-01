@@ -42,5 +42,8 @@ RUN apt -y update \
     && rm -rf /tmp/lemonldap-ng-config \ 
     && rm -fr /var/lib/apt/lists/*
 
+RUN a2enmod ssl
+COPY sites/default-ssl.conf /etc/apache2/sites-enabled/default-ssl.conf
 VOLUME ["/var/log/apache2", "/etc/apache2", "/etc/lemonldap-ng", "/var/lib/lemonldap-ng/conf", "/var/lib/lemonldap-ng/sessions", "/var/lib/lemonldap-ng/psessions"]
+
 ENTRYPOINT ["dumb-init","--","/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
