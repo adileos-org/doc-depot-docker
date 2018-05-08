@@ -1,0 +1,4 @@
+INSERT INTO `r_user` (`idx`, `id`, `pw`, `droit`, `mail`, `organisme`, `nom`, `prenom`, `anniv`, `telephone`, `nationalite`, `ville_nat`, `adresse`, `recept_mail`, `prenom_p`, `prenom_m`, `creation`, `lecture`, `last_cx`, `last_hash_ctrl`, `tel_valide`, `cg_valide`, `type_user`, `langue`, `fuseau`) VALUES ('1', 'fgontier', MD5('fgontier'), NULL, NULL, 'test', 'gontier', 'frederic', '13/01/1975', '', '', '', '', '', '', '', '', '', '', '', '0', '', '', '', '');
+
+INSERT INTO `r_user` (`idx`, `id`, `pw`, `droit`, `mail`, `organisme`, `nom`, `prenom`, `anniv`, `telephone`, `nationalite`, `ville_nat`, `adresse`, `recept_mail`, `prenom_p`, `prenom_m`, `creation`, `lecture`, `last_cx`, `last_hash_ctrl`, `tel_valide`, `cg_valide`, `type_user`, `langue`, `fuseau`) VALUES ('2', 'dwho', MD5('dwho'), NULL, NULL, 'test', 'gontier', 'frederic', '13/01/1975', '', '', '', '', '', '', '', '', '', '', '', '0', '', '', '', '');
+

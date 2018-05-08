@@ -42,8 +42,11 @@ RUN apt -y update \
     && rm -rf /tmp/lemonldap-ng-config \ 
     && rm -fr /var/lib/apt/lists/*
 
+
 RUN a2enmod ssl
 COPY sites/default-ssl.conf /etc/apache2/sites-enabled/default-ssl.conf
 VOLUME ["/var/log/apache2", "/etc/apache2", "/etc/lemonldap-ng", "/var/lib/lemonldap-ng/conf", "/var/lib/lemonldap-ng/sessions", "/var/lib/lemonldap-ng/psessions"]
+
+RUN apt-get -y update && apt-get -y install cpanminus gcc make libdbd-mysql-perl mysql-client libmysqld-dev && cpan  -f -i DBI DBI::DBD DBD::mysql
 
 ENTRYPOINT ["dumb-init","--","/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
